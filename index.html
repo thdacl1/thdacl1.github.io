@@ -12,12 +12,14 @@
             <h2>DeepSeek AI Chat</h2>
         </div>
         <div class="chat-box" id="chatBox"></div>
-        <div class="input-container">
-            <textarea id="userInput" placeholder="Nhập câu hỏi của bạn..." rows="2"></textarea>
-            <button onclick="getAIResponse()">Gửi</button>
-            <input type="file" id="fileInput" onchange="handleFileSelect(event)" style="display: none;">
-            <button onclick="document.getElementById('fileInput').click()">Tải lên file</button>
-        </div>
+    </div>
+
+    <!-- Phần nhập dữ liệu cố định ở phía dưới màn hình -->
+    <div class="input-container">
+        <textarea id="userInput" placeholder="Nhập câu hỏi của bạn..." rows="2"></textarea>
+        <button onclick="getAIResponse()">Gửi</button>
+        <input type="file" id="fileInput" onchange="handleFileSelect(event)" style="display: none;">
+        <button onclick="document.getElementById('fileInput').click()">Tải lên file</button>
     </div>
 
     <script>
@@ -40,7 +42,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer <YOUR_NOVITA_API_KEY>"
+                        "Authorization": "Bearer sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg"
                     },
                     body: JSON.stringify({
                         model: "deepseek/deepseek-r1",
