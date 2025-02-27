@@ -1,0 +1,30 @@
+<html>
+  curl "https://api.novita.ai/v3/openai/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg>" \
+  -d @- << 'EOF'
+{
+    "model": "deepseek/deepseek-r1",
+    "messages": [
+        {
+            "role": "system",
+            "content": "Be a helpful assistant"
+        },
+        {
+            "role": "user",
+            "content": "Hi there!"
+        }
+    ],
+    "response_format": { "type": "text" },
+    "max_tokens": 2048,
+    "temperature": 0.6,
+    "top_p": 1,
+    "min_p": 0,
+    "top_k": 50,
+    "presence_penalty": 0,
+    "frequency_penalty": 0,
+    "repetition_penalty": 1
+}
+EOF
+  
+</html>
