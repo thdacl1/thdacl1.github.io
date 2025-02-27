@@ -3,47 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek AI Web</title>
+    <title>DeepSeek AI Chat</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>DeepSeek AI Web</h1>
-    <textarea id="userInput" placeholder="Nhập câu hỏi của bạn..." rows="4" cols="50"></textarea>
-    <br>
-    <button onclick="getAIResponse()">Gửi</button>
-    <div id="response"></div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>DeepSeek AI Chat</h2>
+        </div>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="input-container">
+            <textarea id="userInput" placeholder="Nhập câu hỏi của bạn..." rows="2"></textarea>
+            <button onclick="getAIResponse()">Gửi</button>
+        </div>
+    </div>
 
     <script>
         async function getAIResponse() {
             const userInput = document.getElementById("userInput").value;
-            const responseDiv = document.getElementById("response");
-            responseDiv.innerHTML = "Đang xử lý...";
+            const chatBox = document.getElementById("chatBox");
+            const responseDiv = document.createElement("div");
+            responseDiv.classList.add("user-message");
+            responseDiv.innerHTML = "<strong>Bạn:</strong> " + userInput;
+            chatBox.appendChild(responseDiv);
 
-            const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg"
-                },
-                body: JSON.stringify({
-                    model: "deepseek/deepseek-r1",
-                    messages: [
-                        { "role": "system", "content": "Hãy là một trợ lý hữu ích" },
-                        { "role": "user", "content": userInput }
-                    ],
-                    response_format: { "type": "text" },
-                    max_tokens: 2048,
-                    temperature: 0.6,
-                    top_p: 1,
-                    min_p: 0,
-                    top_k: 50,
-                    presence_penalty: 0,
-                    frequency_penalty: 0,
-                    repetition_penalty: 1
-                })
-            });
+            const loadingDiv = document.createElement("div");
+            loadingDiv.classList.add("ai-message");
+            loadingDiv.innerHTML = "<strong>AI:</strong> Đang xử lý...";
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-            const data = await response.json();
-            responseDiv.innerHTML = data.choices[0].message.content;
+            // Gửi yêu cầu tới API với tối ưu hóa
+            try {
+                const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg"
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek/deepseek-r1",
+                        messages: [
+                            { "role": "system", "content": "Hãy là một trợ lý hữu ích" },
+                            { "role": "user", "content": userInput }
+                        ],
+                        response_format: { "type": "text" },
+                        max_tokens: 1024,  // Giới hạn số token trả về
+                        temperature: 0.6,
+                        top_p: 1,
+                        presence_penalty: 0,
+                        frequency_penalty: 0,
+                        repetition_penalty: 1,
+                        top_k: 50,
+                        min_p: 0
+                    })
+                });
+
+                const data = await response.json();
+                loadingDiv.innerHTML = "<strong>AI:</strong> " + data.choices[0].message.content;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                loadingDiv.innerHTML = "<strong>AI:</strong> Đã xảy ra lỗi, vui lòng thử lại!";
+                console.error(error);
+            }
+            document.getElementById("userInput").value = ""; // Xóa nội dung hộp nhập
         }
     </script>
 </body>
