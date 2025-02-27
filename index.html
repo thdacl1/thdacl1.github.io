@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek AI - Tìm kiếm thông minh</title>
-    <link rel="stylesheet" href="style.css">
+    <title>DeepSeek AI Web</title>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="main-container">
-            <header>
-                <h1>DeepSeek AI</h1>
-                <p>Trải nghiệm tìm kiếm thông minh với AI</p>
-            </header>
+    <h1>DeepSeek AI Web</h1>
+    <textarea id="userInput" placeholder="Nhập câu hỏi của bạn..." rows="4" cols="50"></textarea>
+    <br>
+    <button onclick="getAIResponse()">Gửi</button>
+    <div id="response"></div>
 
-            <div class="search-box">
-                <input type="text" id="searchQuery" placeholder="Nhập câu hỏi hoặc từ khóa">
-                <button id="searchBtn">Tìm kiếm</button>
-            </div>
+    <script>
+        async function getAIResponse() {
+            const userInput = document.getElementById("userInput").value;
+            const responseDiv = document.getElementById("response");
+            responseDiv.innerHTML = "Đang xử lý...";
 
-            <div id="loading" class="loading">Đang tìm kiếm...</div>
-            <div id="responseContainer" class="response-container"></div>
-        </div>
-    </div>
+            const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg"
+                },
+                body: JSON.stringify({
+                    model: "deepseek/deepseek-r1",
+                    messages: [
+                        { "role": "system", "content": "Hãy là một trợ lý hữu ích" },
+                        { "role": "user", "content": userInput }
+                    ],
+                    response_format: { "type": "text" },
+                    max_tokens: 2048,
+                    temperature: 0.6,
+                    top_p: 1,
+                    min_p: 0,
+                    top_k: 50,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                    repetition_penalty: 1
+                })
+            });
 
-    <script src="script.js"></script>
+            const data = await response.json();
+            responseDiv.innerHTML = data.choices[0].message.content;
+        }
+    </script>
 </body>
 </html>
