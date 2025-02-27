@@ -27,7 +27,7 @@ document.getElementById('searchBtn').addEventListener('click', function () {
             }
         ],
         model: "deepseek/deepseek-r1",
-        stream: true, // Thay đổi thành true nếu bạn muốn sử dụng tính năng stream
+        stream: false, // Thay đổi thành true nếu bạn muốn sử dụng tính năng stream
         response_format: { type: "text" },
         max_tokens: 2048,
         temperature: 0.6,
