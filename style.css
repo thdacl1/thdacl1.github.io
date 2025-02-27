@@ -1,0 +1,97 @@
+/* style.css */
+
+/* Tổng thể */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header */
+header h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* Search Box */
+.search-box {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+#searchQuery {
+    width: 80%;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#searchQuery:focus {
+    border-color: #4CAF50;
+}
+
+#searchBtn {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchBtn:hover {
+    background-color: #45a049;
+}
+
+/* Loading */
+.loading {
+    display: none;
+    color: #4CAF50;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* Response */
+.response-container {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    min-height: 150px;
+}
+
+.response-container p {
+    color: #333;
+}
