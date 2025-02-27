@@ -3,103 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Chat AI</title>
+  <title>Demo Chat AI với Novita</title>
   <style>
-    /* Bạn có thể thêm CSS tùy chỉnh ở đây để bố cục đẹp hơn */
-    .chat-box { max-width: 600px; margin: 20px auto; border: 1px solid #ccc; padding: 20px; }
-    .message-wrap { margin-bottom: 20px; }
-    .input { width: 100%; padding: 10px; font-size: 14px; }
-    .send-btn { padding: 10px 20px; background-color: #4CAF50; color: white; cursor: pointer; }
-    .send-btn:hover { background-color: #45a049; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .ChatDemo_chat__JLhqj {
+      height: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .ChatDemo_message_wrap__ZOINA {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .OptFooter_footer__L_I9N {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .OptFooter_input_wrap__0q6eK {
+      display: flex;
+      width: 100%;
+    }
+    .OptFooter_input__ky0xA {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .OptFooter_input_btn__eJlKN {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .button_btn__6RzFY {
+      background-color: #f0f0f0;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button_btn__6RzFY:hover {
+      background-color: #e0e0e0;
+    }
   </style>
 </head>
 <body>
-  <div class="chat-demo">
-    <div class="chat-box" style="height: 600px;">
-      <div class="message-wrap">
-        <!-- Tin nhắn sẽ được hiển thị ở đây -->
-      </div>
-      <div class="footer" style="width: 502px; transform: translateY(-229px);">
-        <form class="footer-form" id="chat-form">
-          <div class="footer-opt">
-            <div class="input-wrap" style="padding: 13px 10px; width: 502px;">
-              <textarea id="user-input" class="input" placeholder="Hãy nói gì đó..." rows="1"></textarea>
-            </div>
-            <button type="submit" class="send-btn" id="send-btn">Gửi</button>
-          </div>
-        </form>
+  <div class="ChatDemo_chat__JLhqj">
+    <div class="ChatDemo_message_wrap__ZOINA" id="chat-window">
+      <!-- Các tin nhắn sẽ hiển thị ở đây -->
+    </div>
+    <div class="OptFooter_footer__L_I9N">
+      <form class="OptFooter_footer_form__cYiWF" onsubmit="sendMessage(event)">
+        <div class="OptFooter_input_wrap__0q6eK">
+          <textarea class="OptFooter_input__ky0xA" placeholder="Hãy nói gì đó..." id="user-message" rows="1"></textarea>
+          <button type="submit" class="OptFooter_input_btn__eJlKN">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"></path><path d="M6 12h16"></path></svg>
+          </button>
+        </div>
+      </form>
+      <div class="flex items-center gap-2">
+        <button class="button_btn__6RzFY">Nhập nhân vật</button>
+        <button class="button_btn__6RzFY">Xóa lịch sử</button>
+        <button class="button_btn__6RzFY">Cài đặt</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Hàm gửi yêu cầu tới API Novita AI
+    const chatWindow = document.getElementById('chat-window');
+    const userMessageInput = document.getElementById('user-message');
+
+    // Gửi tin nhắn và lấy phản hồi từ API Novita
+    async function sendMessage(event) {
+      event.preventDefault();
+      const userMessage = userMessageInput.value.trim();
+      
+      if (userMessage) {
+        displayMessage(userMessage, 'user');
+        userMessageInput.value = '';
+        
+        // Gọi API Novita để lấy phản hồi AI
+        const aiResponse = await getAIResponse(userMessage);
+        displayMessage(aiResponse, 'ai');
+      }
+    }
+
+    // Hàm gọi API Novita
     async function getAIResponse(userInput) {
       const apiUrl = "https://api.novita.ai/v3/openai/chat/completions";
-      const apiKey = "sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg";  // Thay thế bằng API Key của bạn
+      const apiKey = "sk_XUEQztNwoL_vDz7R-IMYcPQRCfbNCfx2hn_MWORs_Hg"; // Thay thế bằng API key thật của bạn
 
-      const requestPayload = {
-        model: "deepseek/deepseek-r1",
+      const requestBody = {
+        model: "deepseek/deepseek-r1",  // Thay đổi mô hình
         messages: [
-          { role: "system", content: "Be a helpful assistant" },
-          { role: "user", content: userInput }
+          {
+            role: "user",
+            content: userInput,
+          },
         ],
-        response_format: { type: "text" },
-        max_tokens: 2048,
-        temperature: 0.6,
-        top_p: 1,
-        min_p: 0,
-        top_k: 50,
-        presence_penalty: 0,
-        frequency_penalty: 0,
-        repetition_penalty: 1
+        max_tokens: 2048,  // Thay đổi số token tối đa
       };
 
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
+          "Authorization": `Bearer ${apiKey}`,
         },
-        body: JSON.stringify(requestPayload)
+        body: JSON.stringify(requestBody),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        return data.choices[0].message.content;  // Lấy nội dung phản hồi từ API
-      } else {
-        console.error("Lỗi khi gọi API:", response.statusText);
-        return "Có lỗi xảy ra, vui lòng thử lại!";
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error("Lỗi API:", errorMessage);
+        return "Xin lỗi, có lỗi xảy ra khi liên hệ với AI.";
       }
+
+      const data = await response.json();
+      return data.choices[0].message.content.trim(); // Lấy nội dung phản hồi của AI
     }
 
-    // Xử lý sự kiện gửi tin nhắn
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('chat-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        // Lấy nội dung người dùng nhập
-        const userInput = document.getElementById('user-input').value;
-
-        if (userInput.trim()) {
-          // Hiển thị tin nhắn của người dùng trong giao diện
-          const userMessage = document.createElement('div');
-          userMessage.textContent = `Bạn: ${userInput}`;
-          document.querySelector('.message-wrap').appendChild(userMessage);
-
-          // Gửi yêu cầu tới API Novita AI và nhận phản hồi
-          const aiResponse = await getAIResponse(userInput);
-
-          // Hiển thị phản hồi của AI trong giao diện
-          const botResponse = document.createElement('div');
-          botResponse.textContent = `AI: ${aiResponse}`;
-          document.querySelector('.message-wrap').appendChild(botResponse);
-
-          // Xóa ô nhập liệu
-          document.getElementById('user-input').value = '';
-        }
-      });
-    });
+    // Hàm hiển thị tin nhắn
+    function displayMessage(message, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+      messageDiv.textContent = message;
+      chatWindow.appendChild(messageDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;  // Cuộn xuống cuối
+    }
   </script>
 </body>
 </html>
