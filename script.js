@@ -40,7 +40,7 @@ document.getElementById('searchBtn').addEventListener('click', function () {
     };
 
     // Gửi yêu cầu đến API Novita
-    fetch('https://api.novita.ai/v3/openai/chat/completions', {
+    fetch('https://api.novita.ai/v3/openai', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
